@@ -18,14 +18,14 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://pypi.org/packages/source/{{ pyqt_builder_name[0] }}/{{ pyqt_builder_name }}/{{ pyqt_builder_name.replace('-', '_').lower() }}-{{ pyqt_builder_version }}.tar.gz
-    sha256: 56dfea461484a87a8f0c8b0229190defc436d7ec5de71102e20b35e5639180bc
-    folder: pyqt-builder
-    patches:
-      #- patches/0001-Use-conda-sysroot-when-building-recipes.patch
-      - patches/0002-disable-test-execution-cross.patch
-      - patches/0003-find-sip-distinfo.patch
-      - patches/0004-Use-conda-sysroot-when-building-recipes.patch
+  # - url: https://pypi.org/packages/source/{{ pyqt_builder_name[0] }}/{{ pyqt_builder_name }}/{{ pyqt_builder_name.replace('-', '_').lower() }}-{{ pyqt_builder_version }}.tar.gz
+  #   sha256: 56dfea461484a87a8f0c8b0229190defc436d7ec5de71102e20b35e5639180bc
+  #   folder: pyqt-builder
+  #   patches:
+  #     #- patches/0001-Use-conda-sysroot-when-building-recipes.patch
+  #     - patches/0002-disable-test-execution-cross.patch
+  #     - patches/0003-find-sip-distinfo.patch
+  #     - patches/0004-Use-conda-sysroot-when-building-recipes.patch
 
   - url: https://pypi.org/packages/source/{{ pyqt_name[0] }}/{{ pyqt_name }}/{{ pyqt_name.replace('-', '_').lower() }}-{{ version }}.tar.gz
     sha256: 91d937d6166274fafd70f4dee11a8da6dbfdb0da53de05f5d62361ddf775e256
@@ -49,29 +49,29 @@ build:
 outputs:
   # Not actually exporting this package, just experimenting to see if
   # this needs to be patched.
-  - name: my-pyqt6-builder
-    version: {{ pyqt_builder_version }}
-    build:
-      noarch: python
-      script: cd pyqt-builder && {{ PYTHON }} -m pip install . -vv
-      entry_points:
-        - pyqt-bundle = pyqtbuild.bundle.bundle_main:main
-        - pyqt-qt-wheel = pyqtbuild.bundle.qt_wheel_main:main
+  # - name: my-pyqt6-builder
+  #   version: {{ pyqt_builder_version }}
+  #   build:
+  #     noarch: python
+  #     script: cd pyqt-builder && {{ PYTHON }} -m pip install . -vv
+  #     entry_points:
+  #       - pyqt-bundle = pyqtbuild.bundle.bundle_main:main
+  #       - pyqt-qt-wheel = pyqtbuild.bundle.qt_wheel_main:main
 
-    requirements:
-      build:
-        - python                                 # [build_platform != target_platform]
-        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-      host:
-        - python
-        - setuptools
-        - wheel
-        - pip
-      run:
-        - python
-        - sip
-        - packaging
-        - toml
+  #   requirements:
+  #     build:
+  #       - python                                 # [build_platform != target_platform]
+  #       - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+  #     host:
+  #       - python
+  #       - setuptools
+  #       - wheel
+  #       - pip
+  #     run:
+  #       - python
+  #       - sip
+  #       - packaging
+  #       - toml
 
   - name: pyqt6-sip
     version: {{ pyqt_sip_version }}
@@ -116,7 +116,7 @@ outputs:
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         #- pyqt-builder                          # [build_platform != target_platform]
-        - my-pyqt6-builder                       # [build_platform != target_platform]
+        - pyqt-builder {{ pyqt_builder_version }}                      # [build_platform != target_platform]
         - sip                                    # [build_platform != target_platform]
         - qt6-main {{ version }}                 # [build_platform != target_platform]
         - make
@@ -127,7 +127,7 @@ outputs:
         - sip                                    # [build_platform == target_platform]
         - toml
         #- pyqt-builder                          # [build_platform == target_platform]
-        - my-pyqt6-builder                       # [build_platform == target_platform]
+        - pyqt-builder {{ pyqt_builder_version }} # [build_platform == target_platform]
         - packaging
         - qt6-main {{ version }}
         - libgl-devel                            # [linux]
@@ -266,7 +266,7 @@ outputs:
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         #- pyqt-builder                          # [build_platform != target_platform]
-        - my-pyqt6-builder                       # [build_platform != target_platform]
+        - pyqt-builder {{ pyqt_builder_version }}                      # [build_platform != target_platform]
         - sip {{ sip_version }}                  # [build_platform != target_platform]
         - qt6-main {{ version }}                 # [build_platform != target_platform]
         - qt6-charts {{ version }}               # [build_platform != target_platform]
@@ -278,7 +278,7 @@ outputs:
         - sip {{ sip_version }}                  # [build_platform == target_platform]
         - toml
         #- pyqt-builder                          # [build_platform == target_platform]
-        - my-pyqt6-builder                       # [build_platform == target_platform]
+        - pyqt-builder {{ pyqt_builder_version }}                      # [build_platform == target_platform]
         - packaging
         - qt6-main {{ version }}
         - qt6-charts {{ version }}
