@@ -2,7 +2,7 @@
 {% set pyqt_builder_name = "PyQt-builder" %}
 {% set pyqt_sip_name = "PyQt6-sip" %}
 {% set version = "6.8.1" %}
-{% set sip_version = "6.12.0" %}
+{% set sip_version = "6.13.1" %}
 {% set pyqt_sip_version = "13.10.0" %}
 {% set pyqt_builder_version = "1.18.2" %}
 {% set webengine_name = "PyQtWebEngine" %}
